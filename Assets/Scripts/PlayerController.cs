@@ -1,4 +1,4 @@
- using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,12 +6,16 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody playerRB;
     private Animator playerAnim;
+    private AudioSource playerAudio;
     public ParticleSystem explostionParticle;
     public ParticleSystem dirtParticle;
+    public AudioClip jumpSound;
+    public AudioClip Crashsound;
     public float jumpForce = 10;
     public float gravityModifier;
     public bool isOnGround = true;
     public bool gameOver;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +23,7 @@ public class PlayerController : MonoBehaviour
         playerRB = GetComponent<Rigidbody>();
         playerRB.AddForce(Vector3.up * 50);
         playerAnim = GetComponent<Animator>();
+        playerAudio = GetComponent<AudioSource>();
         Physics.gravity *= gravityModifier;
     }
 
@@ -31,6 +36,7 @@ public class PlayerController : MonoBehaviour
             isOnGround = false;
             playerAnim.SetTrigger("Jump_trig");
             dirtParticle.Stop();
+            playerAudio.PlayOneShot(jumpSound, 1.0f);
         }
     }
 
@@ -50,6 +56,7 @@ public class PlayerController : MonoBehaviour
             playerAnim.SetInteger("DeathType_int", 1);
             explostionParticle.Play();
             dirtParticle.Stop();
+            playerAudio.PlayOneShot(Crashsound, 1.0f);
         }
     }
 }
